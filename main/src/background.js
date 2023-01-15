@@ -8,14 +8,14 @@
         if (!(lastHistoryEntry instanceof Array)) {
             browser.storage.local.set({
                 realHistoryCount: ++realHistoryCount,
-                `${realHistoryCount}`: [ url, (new Date()).getTime() ],
+                [`${realHistoryCount}`]: [ url, (new Date()).getTime() ],
             })
         } else {
             const [ date, prevUrl ] = lastHistoryEntry
             if (prevUrl != url) {
                 browser.storage.local.set({
                     realHistoryCount: ++realHistoryCount,
-                    `${realHistoryCount}`: [ url, (new Date()).getTime() ],
+                    [`${realHistoryCount}`]: [ url, (new Date()).getTime() ],
                 })
             }
         }
@@ -34,7 +34,7 @@
                 const numbersToGet = [...Array(howFarBack)].map((each, index)=>`${index+start}`)
                 const response = await browser.storage.local.get(numbersToGet)
                 
-                return Object.entries(response).map((key, [site, time])=>[ new Date(time), site ])
+                return Object.entries(response).map(([key, value])=>[ new Date(value[1]), value[0] ])
             }
         }
     })
